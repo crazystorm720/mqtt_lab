@@ -18,8 +18,8 @@ services:
       context: .
       dockerfile: Dockerfile.publisher
     environment:
-      - BROKER_IP
-      - TOPIC
+      - BROKER_IP=${BROKER_IP}
+      - TOPIC=${TOPIC}
     depends_on:
       - mqtt-broker
     deploy:
@@ -35,8 +35,8 @@ services:
       context: .
       dockerfile: Dockerfile.subscriber
     environment:
-      - BROKER_IP
-      - TOPIC
+      - BROKER_IP=${BROKER_IP}
+      - TOPIC=${TOPIC}
     depends_on:
       - mqtt-broker
     volumes:
