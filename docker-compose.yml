@@ -31,3 +31,4 @@ services:
       - mqtt-broker
     volumes:
       - ./data:/data
+
