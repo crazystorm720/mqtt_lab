@@ -1,4 +1,4 @@
-version: '3.8'
+---
 
 services:
   mqtt-broker:
@@ -7,61 +7,42 @@ services:
       - "1883:1883"
     volumes:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    healthcheck:
+      test: ["CMD", "mosquitto_pub", "-h", "localhost", "-t", "health/check", "-m", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   mqtt-publisher:
     build:
       context: .
       dockerfile: Dockerfile.publisher
     environment:
-      - BROKER_IP=mqtt-broker
-      - TOPIC=sensors/data
+      - BROKER_IP=${BROKER_IP}
+      - TOPIC=${TOPIC}
     depends_on:
       - mqtt-broker
     deploy:
       replicas: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   mqtt-subscriber:
     build:
       context: .
       dockerfile: Dockerfile.subscriber
     environment:
-      - BROKER_IP=mqtt-broker
-      - TOPIC=sensors/data
+      - BROKER_IP=${BROKER_IP}
+      - TOPIC=${TOPIC}
     depends_on:
       - mqtt-broker
     volumes:
       - ./data:/data
-
-  influxdb:
-    image: influxdb:latest
-    ports:
-      - "8086:8086"
-    environment:
-      - INFLUXDB_DB=sensordata
-      - INFLUXDB_ADMIN_USER=admin
-      - INFLUXDB_ADMIN_PASSWORD=admin123
-    volumes:
-      - influxdb-data:/var/lib/influxdb
-
-  telegraf:
-    image: telegraf:latest
-    depends_on:
-      - influxdb
-    volumes:
-      - ./telegraf.conf:/etc/telegraf/telegraf.conf
-
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin123
-    depends_on:
-      - influxdb
-    volumes:
-      - grafana-data:/var/lib/grafana
-
-volumes:
-  influxdb-data:
-  grafana-data:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
