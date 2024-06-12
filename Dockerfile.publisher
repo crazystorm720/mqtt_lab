@@ -1,0 +1,8 @@
+FROM ubuntu:focal
+
+RUN apt-get update && apt-get install -y mosquitto-clients
+
+COPY publisher.sh /usr/local/bin/publisher.sh
+RUN chmod +x /usr/local/bin/publisher.sh
+
+CMD ["sh", "/usr/local/bin/publisher.sh"]

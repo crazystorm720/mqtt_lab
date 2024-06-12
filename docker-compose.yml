@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+  mqtt-publisher:
+    build:
+      context: .
+      dockerfile: Dockerfile.publisher
+    environment:
+      - BROKER_IP=mqtt-broker
+      - TOPIC=sensors/data
+    depends_on:
+      - mqtt-broker
+    deploy:
+      replicas: 3
+
+  mqtt-subscriber:
+    build:
+      context: .
+      dockerfile: Dockerfile.subscriber
+    environment:
+      - BROKER_IP=mqtt-broker
+      - TOPIC=sensors/data
+    depends_on:
+      - mqtt-broker
+    volumes:
+      - ./data:/data
