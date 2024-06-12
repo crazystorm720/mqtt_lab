@@ -1,5 +1,3 @@
-# Step-by-Step Guide
-
 ## Step 0: Clone the Repository
 
 ```sh
@@ -77,8 +75,6 @@ cd mqtt_lab
     docker-compose up -d
     ```
 
-These steps ensure a clean and maintainable project setup for your MQTT lab environment.
-
 ## Project Structure
 
 Ensure you have the following directory structure:
@@ -99,9 +95,9 @@ mqtt_lab/
 
 **Dockerfile.publisher:**
 ```Dockerfile
-FROM ubuntu:focal
+FROM python:3.8-slim
 
-RUN apt-get update && apt-get install -y mosquitto-clients
+RUN pip install paho-mqtt
 
 COPY publisher.sh /usr/local/bin/publisher.sh
 RUN chmod +x /usr/local/bin/publisher.sh
@@ -111,9 +107,9 @@ CMD ["sh", "/usr/local/bin/publisher.sh"]
 
 **Dockerfile.subscriber:**
 ```Dockerfile
-FROM ubuntu:focal
+FROM python:3.8-slim
 
-RUN apt-get update && apt-get install -y mosquitto-clients
+RUN pip install paho-mqtt
 
 COPY subscriber.sh /usr/local/bin/subscriber.sh
 RUN chmod +x /usr/local/bin/subscriber.sh
