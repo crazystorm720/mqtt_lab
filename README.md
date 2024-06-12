@@ -1,5 +1,11 @@
 # Step-by-Step Guide
 
+## Step 0: Clone into the repo
+
+git clone
+
+cd mqtt_lab
+
 ## Step 1: Build and Start the Docker Containers
 
 1. **Build the Docker images**:
