@@ -1,10 +1,11 @@
 # Step-by-Step Guide
 
-## Step 0: Clone into the repo
+## Step 0: Clone the Repository
 
+```sh
 git clone git@github.com:crazystorm720/mqtt_lab.git
-
 cd mqtt_lab
+```
 
 ## Step 1: Build and Start the Docker Containers
 
@@ -18,7 +19,7 @@ cd mqtt_lab
     docker-compose up -d
     ```
 
-#### Step 2: Verify MQTT Data Flow
+## Step 2: Verify MQTT Data Flow
 
 1. **Check the broker logs** to ensure it is running correctly:
     ```sh
@@ -35,7 +36,7 @@ cd mqtt_lab
     docker-compose exec mqtt-subscriber cat /data/data.log
     ```
 
-#### Step3: Perform MQTT Verification Commands
+## Step 3: Perform MQTT Verification Commands
 
 1. **Publish a test message manually**:
     ```sh
@@ -52,7 +53,7 @@ cd mqtt_lab
     cat ./data/data.log
     ```
 
-### Cleanup and Maintenance
+## Cleanup and Maintenance
 
 1. **Stop and Remove All Containers**:
     ```sh
@@ -78,8 +79,6 @@ cd mqtt_lab
 
 These steps ensure a clean and maintainable project setup for your MQTT lab environment.
 
-
-
 ## Project Structure
 
 Ensure you have the following directory structure:
@@ -96,7 +95,7 @@ mqtt_lab/
 └── data/
 ```
 
-#### Step 2: Create Dockerfiles
+## Step 4: Create Dockerfiles
 
 **Dockerfile.publisher:**
 ```Dockerfile
@@ -122,7 +121,7 @@ RUN chmod +x /usr/local/bin/subscriber.sh
 CMD ["sh", "/usr/local/bin/subscriber.sh"]
 ```
 
-#### Step 3: Create MQTT Publisher Script
+## Step 5: Create MQTT Publisher Script
 
 **publisher.sh:**
 ```sh
@@ -155,7 +154,7 @@ while true; do
 done
 ```
 
-#### Step 4: Create MQTT Subscriber Script
+## Step 6: Create MQTT Subscriber Script
 
 **subscriber.sh:**
 ```sh
@@ -180,7 +179,7 @@ mosquitto_sub -h $BROKER_IP -t $TOPIC | while read -r message; do
 done
 ```
 
-#### Step 5: Create Mosquitto Configuration File
+## Step 7: Create Mosquitto Configuration File
 
 **mosquitto.conf:**
 ```conf
@@ -188,7 +187,7 @@ listener 1883
 allow_anonymous true
 ```
 
-#### Step 6: Create Docker Compose File
+## Step 8: Create Docker Compose File
 
 **docker-compose.yml:**
 ```yaml
