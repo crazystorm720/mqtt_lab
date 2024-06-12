@@ -2,7 +2,7 @@
 
 ## Step 0: Clone into the repo
 
-git clone
+git clone git@github.com:crazystorm720/mqtt_lab.git
 
 cd mqtt_lab
 
