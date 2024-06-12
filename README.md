@@ -1,3 +1,7 @@
+# MQTT Lab
+
+This project sets up an MQTT lab environment using Docker to simulate sensors, publish data to an MQTT broker, and collect the data for further processing.
+
 ## Step 0: Clone the Repository
 
 ```sh
@@ -95,9 +99,7 @@ mqtt_lab/
 
 **Dockerfile.publisher:**
 ```Dockerfile
-FROM python:3.8-slim
-
-RUN pip install paho-mqtt
+FROM eclipse-mosquitto:2.0.18
 
 COPY publisher.sh /usr/local/bin/publisher.sh
 RUN chmod +x /usr/local/bin/publisher.sh
@@ -107,9 +109,7 @@ CMD ["sh", "/usr/local/bin/publisher.sh"]
 
 **Dockerfile.subscriber:**
 ```Dockerfile
-FROM python:3.8-slim
-
-RUN pip install paho-mqtt
+FROM eclipse-mosquitto:2.0.18
 
 COPY subscriber.sh /usr/local/bin/subscriber.sh
 RUN chmod +x /usr/local/bin/subscriber.sh
@@ -140,7 +140,7 @@ while true; do
   TIMESTAMP=$(date +%s)
   PAYLOAD="{\"timestamp\": \"$TIMESTAMP\", \"temperature\": $TEMP, \"humidity\": $HUM}"
   
-  mosquitto_pub -h $BROKER_IP -t $TOPIC -m "$PAYLOAD"
+  /usr/bin/mosquitto_pub -h $BROKER_IP -t $TOPIC -m "$PAYLOAD"
   if [ $? -eq 0 ]; then
     log "Published: $PAYLOAD"
   else
@@ -170,7 +170,7 @@ log() {
 
 log "Starting MQTT Subscriber"
 
-mosquitto_sub -h $BROKER_IP -t $TOPIC | while read -r message; do
+/usr/bin/mosquitto_sub -h $BROKER_IP -t $TOPIC | while read -r message; do
   log "Received: $message"
 done
 ```
@@ -191,7 +191,7 @@ version: '3.9'
 
 services:
   mqtt-broker:
-    image: eclipse-mosquitto
+    image: eclipse-mosquitto:2.0.18
     ports:
       - "1883:1883"
     volumes:
