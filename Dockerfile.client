@@ -1,8 +1,0 @@
-FROM ubuntu:focal
-
-RUN apt-get update && apt-get install -y mosquitto-clients
-
-COPY generate_synthetic_data.sh /usr/local/bin/generate_synthetic_data.sh
-RUN chmod +x /usr/local/bin/generate_synthetic_data.sh
-
-CMD ["sh", "-c", "/usr/local/bin/generate_synthetic_data.sh $BROKER_IP"]
