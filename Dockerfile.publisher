@@ -1,6 +1,6 @@
-FROM python:3.8-slim
+FROM ubuntu:focal
 
-RUN pip install paho-mqtt
+RUN apt-get update && apt-get install -y mosquitto-clients
 
 COPY publisher.sh /usr/local/bin/publisher.sh
 RUN chmod +x /usr/local/bin/publisher.sh
