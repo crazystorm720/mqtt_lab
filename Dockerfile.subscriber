@@ -1,6 +1,4 @@
-FROM python:3.8-slim
-
-RUN pip install paho-mqtt
+FROM eclipse-mosquitto:2.0.18
 
 COPY subscriber.sh /usr/local/bin/subscriber.sh
 RUN chmod +x /usr/local/bin/subscriber.sh
