@@ -14,6 +14,6 @@ log() {
 
 log "Starting MQTT Subscriber"
 
-mosquitto_sub -h $BROKER_IP -t $TOPIC | while read -r message; do
+/usr/bin/mosquitto_sub -h $BROKER_IP -t $TOPIC | while read -r message; do
   log "Received: $message"
 done
