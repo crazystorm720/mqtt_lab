@@ -1,6 +1,80 @@
-### Step-by-Step Guide
+# Step-by-Step Guide
 
-#### Step 1: Project Structure
+## Step 1: Build and Start the Docker Containers
+
+1. **Build the Docker images**:
+    ```sh
+    docker-compose build
+    ```
+
+2. **Start the Docker containers**:
+    ```sh
+    docker-compose up -d
+    ```
+
+#### Step 2: Verify MQTT Data Flow
+
+1. **Check the broker logs** to ensure it is running correctly:
+    ```sh
+    docker-compose logs mqtt-broker
+    ```
+
+2. **Verify publishers are sending data**:
+    ```sh
+    docker-compose logs mqtt-publisher
+    ```
+
+3. **Verify the subscriber is collecting data**:
+    ```sh
+    docker-compose exec mqtt-subscriber cat /data/data.log
+    ```
+
+#### Step3: Perform MQTT Verification Commands
+
+1. **Publish a test message manually**:
+    ```sh
+    docker-compose exec mqtt-publisher mosquitto_pub -h mqtt-broker -t "sensors/data" -m "test message"
+    ```
+
+2. **Subscribe to the topic to see real-time data**:
+    ```sh
+    docker-compose exec mqtt-subscriber mosquitto_sub -h mqtt-broker -t "sensors/data"
+    ```
+
+3. **Check the collected data file** to ensure data is being logged**:
+    ```sh
+    cat ./data/data.log
+    ```
+
+### Cleanup and Maintenance
+
+1. **Stop and Remove All Containers**:
+    ```sh
+    docker-compose down --volumes --remove-orphans
+    ```
+
+2. **Remove Any Remaining Containers**:
+    ```sh
+    docker ps -a
+    docker rm -f <container_id>  # For any remaining containers
+    ```
+
+3. **Remove Any Remaining Networks**:
+    ```sh
+    docker network ls
+    docker network rm <network_id>  # For any remaining networks
+    ```
+
+4. **Restart Services**:
+    ```sh
+    docker-compose up -d
+    ```
+
+These steps ensure a clean and maintainable project setup for your MQTT lab environment.
+
+
+
+## Project Structure
 
 Ensure you have the following directory structure:
 
@@ -161,75 +235,3 @@ services:
         max-size: "10m"
         max-file: "3"
 ```
-
-#### Step 7: Build and Start the Docker Containers
-
-1. **Build the Docker images**:
-    ```sh
-    docker-compose build
-    ```
-
-2. **Start the Docker containers**:
-    ```sh
-    docker-compose up -d
-    ```
-
-#### Step 8: Verify MQTT Data Flow
-
-1. **Check the broker logs** to ensure it is running correctly:
-    ```sh
-    docker-compose logs mqtt-broker
-    ```
-
-2. **Verify publishers are sending data**:
-    ```sh
-    docker-compose logs mqtt-publisher
-    ```
-
-3. **Verify the subscriber is collecting data**:
-    ```sh
-    docker-compose exec mqtt-subscriber cat /data/data.log
-    ```
-
-#### Step 9: Perform MQTT Verification Commands
-
-1. **Publish a test message manually**:
-    ```sh
-    docker-compose exec mqtt-publisher mosquitto_pub -h mqtt-broker -t "sensors/data" -m "test message"
-    ```
-
-2. **Subscribe to the topic to see real-time data**:
-    ```sh
-    docker-compose exec mqtt-subscriber mosquitto_sub -h mqtt-broker -t "sensors/data"
-    ```
-
-3. **Check the collected data file** to ensure data is being logged**:
-    ```sh
-    cat ./data/data.log
-    ```
-
-### Cleanup and Maintenance
-
-1. **Stop and Remove All Containers**:
-    ```sh
-    docker-compose down --volumes --remove-orphans
-    ```
-
-2. **Remove Any Remaining Containers**:
-    ```sh
-    docker ps -a
-    docker rm -f <container_id>  # For any remaining containers
-    ```
-
-3. **Remove Any Remaining Networks**:
-    ```sh
-    docker network ls
-    docker network rm <network_id>  # For any remaining networks
-    ```
-
-4. **Restart Services**:
-    ```sh
-    docker-compose up -d
-    ```
-
-These steps ensure a clean and maintainable project setup for your MQTT lab environment.
