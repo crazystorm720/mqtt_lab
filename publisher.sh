@@ -17,7 +17,7 @@ while true; do
   TIMESTAMP=$(date +%s)
   PAYLOAD="{\"timestamp\": \"$TIMESTAMP\", \"temperature\": $TEMP, \"humidity\": $HUM}"
   
-  mosquitto_pub -h $BROKER_IP -t $TOPIC -m "$PAYLOAD"
+  /usr/bin/mosquitto_pub -h $BROKER_IP -t $TOPIC -m "$PAYLOAD"
   if [ $? -eq 0 ]; then
     log "Published: $PAYLOAD"
   else
