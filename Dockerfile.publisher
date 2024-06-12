@@ -1,6 +1,4 @@
-FROM ubuntu:focal
-
-RUN apt-get update && apt-get install -y mosquitto-clients
+FROM eclipse-mosquitto:2.0.18
 
 COPY publisher.sh /usr/local/bin/publisher.sh
 RUN chmod +x /usr/local/bin/publisher.sh
